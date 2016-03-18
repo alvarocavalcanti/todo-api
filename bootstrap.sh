@@ -9,4 +9,7 @@ apt-get install libpq-dev python-dev python-pip -q -y
 apt-get install postgresql python-psycopg2
 
 # install project dependencies
+pip install virtualenv
 pip install -r /vagrant/codigo/requirements.txt
+
+virtualenv --python=python3 todo-api-venv
