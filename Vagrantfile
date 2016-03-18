@@ -14,8 +14,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     todo_api.vm.provision :shell, :path => "bootstrap.sh"
 
-    todo_api.vm.synced_folder "./codigo", "/home/todo-api", create: true
-
     todo_api.vm.provider 'virtualbox' do |virtualbox|
       virtualbox.memory = 2048
       virtualbox.cpus = 4
