@@ -34,13 +34,13 @@ source env/bin/activate
 > ##### Mais detalhes sobre o virtualenv
 > É possível encontrar mais detalhes sobre a ferramenta no site oficial. Inclusive se o desenvolvedor estiver usando ambiente Windows os comandos acima não se aplicam, mas [nesta sessão](https://virtualenv.pypa.io/en/latest/userguide.html#activate-script) da documentação é possível encontrar os comandos equivalentes.
 
-Com o virtualenv ativado nós podemos começar a instalar os pacotes que vamos precisar. Esta instalação é feita usando o [PIP](https://en.wikipedia.org/wiki/Pip_(package_manager)) um gerenciador de pacotes para Python. A partir da versão 3 da pltaforma o pip já é incluído, logo, já deve estar disponível no ambiente.
+Com o virtualenv ativado nós podemos começar a instalar os pacotes que vamos precisar. Esta instalação é feita usando o [PIP](https://en.wikipedia.org/wiki/Pip_(package_manager) um gerenciador de pacotes para Python, e a partir da versão 3 da plataforma ele já está incluído.
 
 É possível instalar estes pacotes um a um, porém existe uma técnica recomendada: usar um arquivo chamado `requirements.txt` para listar todas as dependências do seu projeto.
 
-Dito isto, vamos criar o arquivo acima mencionado com o seguinte conteúdo (por hora):
+Dito isto, vamos criar este arquivo com o seguinte conteúdo:
 
-```txt
+```text
 Django==1.9.2
 djangorestframework==3.3.2
 ```
@@ -58,8 +58,6 @@ E agora nós precisamos instalar os pacotes especificados acima, da seguinte for
 ```bash
 pip install -r requirements.txt
 ```
-
-> Talvez seja preciso executar este comando como administrador.
 
 Ao término da instalação nós devemos proceder para a criação, de fato, do projeto Django. Isto é feito usando o comando `django-admin`, dentro da pasta do nosso projeto e executar o seguinte comando:
 
@@ -96,8 +94,63 @@ E depois iniciando o servidor de aplicação:
 ./manage.py runserver
 ```
 
-A saída do comando acima deve indicar qual o endereço no qual o nosso servidor está rodando (http://127.0.0.1:8000/), e nós podemos acessá-lo pelo browser para ver o resultado.
+A saída do comando acima deve indicar qual o endereço no qual o nosso servidor está rodando (http://127.0.0.1:8000/ por padrão), e nós podemos acessá-lo pelo browser para ver o resultado.
 
-### Criando a nossa app
 
-Agora nós já temos o nosso projeto Django funcionando e podemos criar a nossa `app`. Cada projeto Django pode possuir inúmeras apps, e cada uma delas vai ter....
+### O que nós vamos construir?
+
+Agora chega a hora de parar de falar de código para falarmos sobre negócio. Afinal, o que queremos construir? No início deste texto nós dissemos que a ideia é construir uma Lista de Afazeres, mas nós precisamos de mais detalhes do que isso. Vamos listar aqui as principais funcionalidades:
+
+- Criar uma Lista
+- Adicionar Ítens a uma Lista
+- Marcar um Ítem como Concluído
+- Renomear um Ítem
+- Remover um Ítem de uma Lista
+- Excluir uma Lista
+
+Vale lembrar que nós vamos construir uma **API REST** e existe um conceito importante para se discutir, o de recursos (*resources*). Nós podemos pensar em um recurso como alguma coisa que queremos acessar. Este recurso deve ser identificável através da URL, por exemplo:
+
+```
+http://localhost/livros
+http://localhost/livros/231
+http://localhost/livros/231/capitulos/13
+```
+
+Olhando os exemplos acima nós temos *dois* recursos: Livros e Capítulos. Se prestarmos atenção também é possível identificar o padrão semântico das URLs. Quando ela termina com um recurso nós podemos esperar uma listagem, e quando existe um identificador após o recurso é esperado que nós recuperemos os detalhes de um recurso em específico.
+
+Vale destacar o recurso Capítulos, que na aparece como um sub-recurso de Livros (que pode ser chamado de recurso de alto-nível) mas que segue o mesmo padrão semântico, sendo, assim, consistente com o conceito esperado.
+
+### Criando nossa aplicação
+
+Cada projeto Django é composto por uma ou mais `apps` e cada uma delas contém uma estrutura definda para agrupar `Views`, `Models` e outros objetos. Uma boa maneira de utilizar este conceito com a nossa API é pensar em cada recurso como sendo uma `app`, inclusive os sub-recursos também ficariam localizados dentro das pastas de cada recurso de alto-nível.
+
+Com isto em mente nós podemos agora criar a nossa `app`, dando a ela o nome `listas`. Para isso, precisamos executar o seguinte comando:
+
+```shell
+cd todo-project
+./manage.py startapp listas
+```
+
+Este comando vai criar uma pasta chamada listas que vai ter a seguinte estrutura:
+
+```text
+listas/
+├── __init__.py
+├── admin.py
+├── apps.py
+├── migrations
+│   └── __init__.py
+├── models.py
+├── tests.py
+└── views.py
+```
+
+Por fim, precisamos criar um super-usuário através do seguinte comando:
+
+```shell
+./manage.py createsuperuser
+```
+
+> Na hora de criar o super-usuário serão solicitadas informações para o nome, email e a senha deste usuário.
+
+...
